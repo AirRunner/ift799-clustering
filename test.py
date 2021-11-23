@@ -1,8 +1,8 @@
 import sys
 import numpy as np
 from matplotlib import pyplot as plt
-from k_means import k_means_auto_clusters
-from fc_means import fc_means_auto_clusters
+from scripts.k_means import k_means_auto_clusters
+from scripts.fc_means import fc_means_auto_clusters
 
 
 def main():
