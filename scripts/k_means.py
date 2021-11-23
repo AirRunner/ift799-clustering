@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 from scripts.silhouette import dist_euclide, silhouette
 
 
@@ -32,7 +31,7 @@ def k_means_auto_clusters(X, min_k=2, max_k=10):
 
     np.random.shuffle(X)
 
-    for k in tqdm(range(min_k, max_k + 1)):
+    for k in range(min_k, max_k + 1):
         centers, y = k_means(X, k)
 
         s = silhouette(X, y)
