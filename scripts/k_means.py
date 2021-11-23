@@ -1,4 +1,5 @@
 import numpy as np
+
 from scripts.silhouette import dist_euclide, silhouette
 
 

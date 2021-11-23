@@ -1,5 +1,6 @@
 import numpy as np
 from fcmeans import FCM
+
 from scripts.silhouette import silhouette
 
 
