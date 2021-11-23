@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 from fcmeans import FCM
-from silhouette import silhouette
+from scripts.silhouette import silhouette
 
 
 def fc_means_auto_clusters(X, min_k=2, max_k=10):

@@ -1,6 +1,6 @@
 import numpy as np
 from tqdm import tqdm
-from silhouette import dist_euclide, silhouette
+from scripts.silhouette import dist_euclide, silhouette
 
 
 def k_means(X, k, threshold=1e-3):
