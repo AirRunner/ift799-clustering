@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 from fcmeans import FCM
 from scripts.silhouette import silhouette
 
@@ -10,7 +9,7 @@ def fc_means_auto_clusters(X, min_k=2, max_k=10):
 
     np.random.shuffle(X)
 
-    for k in tqdm(range(min_k, max_k + 1)):
+    for k in range(min_k, max_k + 1):
         fcm = FCM(n_clusters=k)
         fcm.fit(X)
         

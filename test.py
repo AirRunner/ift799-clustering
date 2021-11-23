@@ -28,7 +28,7 @@ def main():
     plt.title("Silhouette value in function of k")
     plt.xlabel("Number of clusters (k)")
     plt.ylabel("Silhouette value")
-    plt.plot(range(2, 11), s_values)
+    plt.plot(range(min_k, max_k + 1), s_values)
     plt.show()
 
     plt.title(f"Result of {'k-means' if sys.argv[1] == 'km' else 'fc-means'} clustering")
