@@ -18,7 +18,7 @@ def main():
     elif algo == "fcm":
         clustering = fc_means_auto_clusters
     else:
-        raise NotImplementedError(f"The algorithm {sys.argv[1]} is not supported")
+        raise NotImplementedError(f"The algorithm {algo} is not supported")
 
     df = prepare_data()
     dates, windows = create_windows(df, window_size, window_shift)

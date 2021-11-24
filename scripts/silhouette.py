@@ -11,6 +11,11 @@ def silhouette(X, y):
     for p in range(len(X)):
         i = y[p]
         Ci = X[y == i]
+        
+        if len(Ci) == 1:
+            s.append(0)
+            continue
+
         a = sum(dist_euclide(X[p], Ci)) / (len(Ci) - 1)
 
         bj = []

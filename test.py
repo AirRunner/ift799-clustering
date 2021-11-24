@@ -7,6 +7,7 @@ from scripts.fc_means import fc_means_auto_clusters
 
 
 def main():
+    algo = sys.argv[1]
     n_samples = 1000
     min_k = 2
     max_k = 10
@@ -17,12 +18,12 @@ def main():
         np.random.normal((-4, 4), size=(n_samples, 2))
     ))
 
-    if sys.argv[1] == "km":
+    if algo == "km":
         centers, y, k, s_values = k_means_auto_clusters(X, min_k, max_k)
-    elif sys.argv[1] == "fcm":
+    elif algo == "fcm":
         centers, y, k, s_values = fc_means_auto_clusters(X, min_k, max_k)
     else:
-        raise NotImplementedError(f"The algorithm {sys.argv[1]} is not supported")
+        raise NotImplementedError(f"The algorithm {algo} is not supported")
 
     print("Best k:", k)
 
@@ -32,7 +33,7 @@ def main():
     plt.plot(range(min_k, max_k + 1), s_values)
     plt.show()
 
-    plt.title(f"Result of {'k-means' if sys.argv[1] == 'km' else 'fc-means'} clustering")
+    plt.title(f"Result of {'k-means' if algo == 'km' else 'fc-means'} clustering")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.scatter(X[:,0], X[:,1], alpha=0.2, c=y)
