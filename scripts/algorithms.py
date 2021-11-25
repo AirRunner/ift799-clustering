@@ -1,8 +1,8 @@
 import numpy as np
-from random import choice
 from fcmeans import FCM
+from fastdtw import fastdtw
 
-from scripts.distances import dist_euclide, dtw_score, dist_to_clust
+from scripts.distances import dist_euclide, dist_matrix #dtw_score
 
 
 def k_means(X, k, threshold=1e-3):
@@ -39,12 +39,14 @@ def fc_means(X, k):
     return centers, y
 
 
-def k_meanoid(X, k, dist=dtw_score):
-    rem = lambda A, i: np.delete(A, i, axis=0)
-    
+def k_meanoid(X, k, dist_mat=None, dist=fastdtw):
     # Assign clusters randomly
     N = X.shape[0]
-    y = np.asarray([choice(range(k)) for _ in range(N)])
+    y = np.arange(N) % k
+    
+    # Compute distance matrix
+    if dist_mat is None:
+        dist_mat = dist_matrix(X, dist=dist)
     
     # Run algorithm
     old_y = y.copy()
@@ -56,10 +58,15 @@ def k_meanoid(X, k, dist=dtw_score):
             
             # Assign to the point the closest cluster
             for c in range(k):
-                cluster = rem(X, i)[rem(y, i) == c]
-                if (score := dist_to_clust(X[i], cluster, dist)) < best_score:
-                    best_score = score
-                    best_clust = c
+                c_idxs = np.where(y == c)[0]
+                c_idxs = c_idxs[c_idxs != i]
+                
+                if len(c_idxs) > 0:
+                    score = sum([dist_mat[i, j] for j in c_idxs]) / len(c_idxs)
+                    
+                    if score < best_score:
+                        best_score = score
+                        best_clust = c
                     
             y[i] = best_clust
             

@@ -4,7 +4,6 @@ import numpy as np
 def dist_euclide(x, y):
     return np.linalg.norm(x - y, axis=1)
 
-
 def dtw_score(s, t):
     n, m = len(s), len(t)
     
@@ -23,9 +22,20 @@ def dtw_score(s, t):
     # dtw[i,j] is the distance between s[1:i] and t[1:j] with the best alignment
     return dtw[n, m]
 
+def dist_matrix(X, dist):
+    print(">> Distance matrix")
 
-def dist_to_clust(x, C, dist, mean=True):
-    # Assuming x is not in C
-    denom = len(C) if mean else 1
-    dist = sum([dist(x, ci) for ci in C])
-    return dist / denom
+    N = X.shape[0]
+    dist_mat = np.zeros((N, N))
+
+    for i in range(N):
+        if (i/N*100) % 10 == 0:
+            print(f"{int(i/N*100)}%...", end=' ')
+        
+        for j in range(N):
+            if i == j:
+                continue
+            dist_mat[i, j] = dist(X[i], X[j])[0]
+    print()
+
+    return dist_mat
