@@ -1,9 +1,8 @@
 import sys
-from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from scripts.k_means import k_means_auto_clusters
-from scripts.fc_means import fc_means_auto_clusters
+from scripts.auto_clusters import auto_clusters
+from scripts.algorithms import k_means, fc_means, k_meanoid
 from scripts.plot import plot_k_values, plot_max_cluster_size
 from scripts.processing import create_windows, prepare_data
 
@@ -14,9 +13,11 @@ def main():
     window_shift = int(sys.argv[3])
 
     if algo == "km":
-        clustering = k_means_auto_clusters
+        clustering = k_means
     elif algo == "fcm":
-        clustering = fc_means_auto_clusters
+        clustering = fc_means
+    elif algo == "dtw":
+        clustering = k_meanoid
     else:
         raise NotImplementedError(f"The algorithm {algo} is not supported")
 
@@ -27,7 +28,7 @@ def main():
     max_cluster_size = []
 
     for win in tqdm(windows):
-        _, y, k, _ = clustering(win)
+        _, y, k, _ = auto_clusters(win, clustering)
         k_values.append(k)
         
         max_size = 0

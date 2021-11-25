@@ -1,8 +1,7 @@
 import numpy as np
 
+from scripts.distances import dist_euclide
 
-def dist_euclide(x, y):
-    return np.linalg.norm(x - y, axis=1)
 
 # Validity index for nb_clusters
 def silhouette(X, y):
