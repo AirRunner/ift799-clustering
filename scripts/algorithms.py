@@ -2,37 +2,36 @@ import numpy as np
 from fcmeans import FCM
 from fastdtw import fastdtw
 
-from scripts.distances import dist_euclide, dist_matrix, dtw_to_clust #dtw_score
+from scripts.distances import dist_euclide, dist_matrix, dtw_to_clust  # dtw_score
 
 
-def k_means(X, k, threshold=1e-3):
+def k_means(X, k, threshold=1e-4, max_iter=100):
     # Initialize random cluster centers
-    centers = X[:k]
-    
-    while True:
+    rand_indices = np.random.choice(X.shape[0], k, replace=False)
+    centers = X[rand_indices]
+
+    for _ in range(max_iter):
         # Assign points to clusters
-        y = []
-        for p in X:
-            y.append(dist_euclide(p, centers).argmin())
-        y = np.asarray(y)
+        y = np.asarray([dist_euclide(p, centers).argmin() for p in X])
 
         # Recalculate centers
         new_centers = centers.copy()
         for c in range(k):
-            mask = y == c
-            new_centers[c] = X[mask].mean(axis=0)
+            new_centers[c] = X[y == c].mean(axis=0)
 
         # Stop if centers are stable
         if (dist_euclide(centers, new_centers) < threshold).all():
-            return new_centers, y
+            break
 
         centers = new_centers
+
+    return new_centers, y
 
 
 def fc_means(X, k):
     fcm = FCM(n_clusters=k)
     fcm.fit(X)
-    
+
     centers = fcm.centers
     y = fcm.predict(X)
 
