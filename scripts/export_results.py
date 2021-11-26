@@ -21,7 +21,7 @@ class ExportResults():
         else:
             filter = "full"
 
-        self.subtitle = f"({algo} avec fenêtres de {window_size} jours et déplacement de {window_shift} jours)"
+        self.subtitle = f"({self.algo} avec fenêtres de {window_size} jours et déplacement de {window_shift} jours)"
         self.filename_params = f"{window_size}_{window_shift}_{filter}"
 
         self.init_output_folder_tree()

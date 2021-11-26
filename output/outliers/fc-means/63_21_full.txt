@@ -1,0 +1,5 @@
+Upper outliers:
+2000-12-29
+2008-08-22
+
+Lower outliers:
