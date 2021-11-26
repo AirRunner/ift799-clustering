@@ -1,10 +1,9 @@
 import sys
-from matplotlib import pyplot as plt
 from tqdm import tqdm
 
 from scripts.k_means import k_means_auto_clusters
 from scripts.fc_means import fc_means_auto_clusters
-from scripts.plot import plot_k_values, plot_max_cluster_size
+from scripts.export_results import identify_outliers, plot_k_values, plot_max_cluster_size
 from scripts.processing import create_windows, prepare_data
 
 
@@ -29,7 +28,7 @@ def main():
     for win in tqdm(windows):
         _, y, k, _ = clustering(win)
         k_values.append(k)
-        
+
         max_size = 0
         for c in range(k):
             size = sum(y == c)
@@ -37,15 +36,19 @@ def main():
                 max_size = size
         max_cluster_size.append(max_size)
 
+    upper_band, lower_band = identify_outliers(dates, max_cluster_size, algo, window_size, window_shift)
+
     plot_k_values(dates, k_values, algo, window_size, window_shift)
-    plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift)
+    plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift, upper_band, lower_band)
+
 
 def help():
     print("\n Usage: python main.py algo window_size window_shift\
-           \n\t algo : 'km' for k-means of 'fcm' for fc-means\
+           \n\t algo : 'km' for k-means or 'fcm' for fc-means\
            \n\t window_size : 21 for a month, 63 for 3 months\
            \n\t window_shift : equal to window_size if no superposition, else smaller\
            \n\n\t ex : python main.py fcm 63 21")
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 4:
