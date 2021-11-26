@@ -1,19 +1,19 @@
 import pandas as pd
 
 
-def prepare_data(years=None, max_vars=None):
+def prepare_data(years=None, nb_vars=None):
     # Load data
     df = pd.read_csv("data/res_2000.csv", index_col='x')
     df.index = pd.to_datetime(df.index)
 
     if years is not None:
-        if max_vars is None:
-            max_vars = df.shape[1]
+        if nb_vars is None:
+            nb_vars = df.shape[1]
         df = df[
             df.index.to_series().between(
                 f'{years[0]}-01-01', f'{years[1]}-12-31'
             )
-        ].iloc[:, :max_vars]
+        ].iloc[:, :nb_vars]
 
     # Normalize series
     df_norm = (df - df.mean()) / df.std()
