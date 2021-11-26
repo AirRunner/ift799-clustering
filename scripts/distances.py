@@ -20,22 +20,22 @@ def dtw_score(s, t):
             ])
     
     # dtw[i,j] is the distance between s[1:i] and t[1:j] with the best alignment
-    return dtw[n, m]
+    return dtw[n, m], dtw
 
 def dist_matrix(X, dist):
-    print(">> Distance matrix")
-
     N = X.shape[0]
     dist_mat = np.zeros((N, N))
 
     for i in range(N):
-        if (i/N*100) % 10 == 0:
-            print(f"{int(i/N*100)}%...", end=' ')
-        
         for j in range(N):
-            if i == j:
+            if i <= j:
                 continue
-            dist_mat[i, j] = dist(X[i], X[j])[0]
-    print()
+            dtw_dist = dist(X[i], X[j])[0]
+            dist_mat[i, j] = dist_mat[j, i] = dtw_dist
 
-    return dist_mat
+    return dist_mat.tolist()
+
+def dtw_to_clust(x_idx, c_idxs, dist_mat):
+    if len(c_idxs) == 0:
+        return np.inf
+    return sum([dist_mat[x_idx][ci] for ci in c_idxs]) / len(c_idxs)

@@ -2,7 +2,7 @@ import numpy as np
 from fcmeans import FCM
 from fastdtw import fastdtw
 
-from scripts.distances import dist_euclide, dist_matrix #dtw_score
+from scripts.distances import dist_euclide, dist_matrix, dtw_to_clust #dtw_score
 
 
 def k_means(X, k, threshold=1e-3):
@@ -50,7 +50,7 @@ def k_meanoid(X, k, dist_mat=None, dist=fastdtw):
     
     # Run algorithm
     old_y = y.copy()
-    while True:
+    for _ in range(100): # Max iterations
         for i in range(N):
             curr_clust = y[i]
             best_clust = curr_clust
@@ -60,17 +60,15 @@ def k_meanoid(X, k, dist_mat=None, dist=fastdtw):
             for c in range(k):
                 c_idxs = np.where(y == c)[0]
                 c_idxs = c_idxs[c_idxs != i]
+                score = dtw_to_clust(i, c_idxs, dist_mat)
                 
-                if len(c_idxs) > 0:
-                    score = sum([dist_mat[i, j] for j in c_idxs]) / len(c_idxs)
-                    
-                    if score < best_score:
-                        best_score = score
-                        best_clust = c
+                if score < best_score:
+                    best_score = score
+                    best_clust = c
                     
             y[i] = best_clust
             
-        if (y == old_y).all():
+        if (y != old_y).sum() < 1e-2 * N: # less than 1% changes
             break
         old_y = y.copy()
     
