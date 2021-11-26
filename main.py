@@ -45,8 +45,8 @@ def main():
                 max_size = size
         max_cluster_size.append(max_size)
 
-    plot_k_values(dates, k_values, algo, window_size, window_shift)
-    plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift)
+    plot_k_values(dates, k_values, algo, window_size, window_shift, years, max_vars)
+    plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift, years, max_vars)
 
 def help():
     print("\n Usage: python main.py algo window_size window_shift [min_year, max_year, max_vars]\
