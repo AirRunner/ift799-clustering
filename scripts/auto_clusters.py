@@ -1,7 +1,7 @@
 import numpy as np
 from fastdtw import fastdtw
 
-from scripts.silhouette import silhouette
+from scripts.silhouette import silhouette, silhouette_noreps
 from scripts.algorithms import dist_matrix
 
 
@@ -34,7 +34,7 @@ def auto_clusters_noreps(X, algo, min_k=2, max_k=10):
     for k in range(min_k, max_k + 1):
         y = algo(X, k, dist_mat=dist_mat)
 
-        s = silhouette(X, y)
+        s = silhouette_noreps(X, y, dist_mat)
         s_values.append(s)
         
         if s > best_s:
