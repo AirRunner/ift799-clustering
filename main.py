@@ -1,7 +1,7 @@
 import sys
 from tqdm import tqdm
 
-from scripts.export_results import identify_outliers, plot_k_values, plot_max_cluster_size
+from scripts.export_results import ExportResults
 from scripts.processing import create_windows, prepare_data
 from scripts.auto_clusters import auto_clusters, auto_clusters_noreps
 from scripts.algorithms import k_means, fc_means, k_meanoid
@@ -45,15 +45,14 @@ def main():
                 max_size = size
         max_cluster_size.append(max_size)
 
-    upper_band, lower_band = identify_outliers(dates, max_cluster_size, algo, window_size, window_shift)
-
-    plot_k_values(dates, k_values, algo, window_size, window_shift, years, max_vars)
-    plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift, upper_band, lower_band, years, max_vars)
+    export_results = ExportResults(dates, k_values, max_cluster_size, algo, window_size, window_shift, years, max_vars)
+    export_results.plot_k_values()
+    export_results.plot_max_cluster_size()
 
 
 def help():
     print("\n Usage: python main.py algo window_size window_shift [min_year, max_year, max_vars]\
-           \n\t algo : 'km' for k-means or 'fcm' for fc-means\
+           \n\t algo : 'km' for k-means or 'fcm' for fc-means or 'dtw' for time series k-meanoid\
            \n\t window_size : 21 for a month, 63 for 3 months\
            \n\t window_shift : equal to window_size if no superposition, else smaller\
            \n\n\t ex : python main.py fcm 63 21")
