@@ -4,10 +4,11 @@ from matplotlib import pyplot as plt
 
 
 class ExportResults():
-    def __init__(self, dates, k_values, max_cluster_size, algo, window_size, window_shift, years=None, max_vars=None):
+    def __init__(self, dates, k_values, max_cluster_size, rand_scores, algo, window_size, window_shift, years=None, nb_vars=None):
         self.dates = dates
         self.k_values = k_values
         self.max_cluster_size = max_cluster_size
+        self.rand_scores = rand_scores
 
         if algo == "km":
             self.algo = "k-means"
@@ -16,8 +17,8 @@ class ExportResults():
         elif algo == "dtw":
             self.algo = "k-meanoid"
 
-        if years is not None and max_vars is not None:
-            filter = f"{years[0]}-{years[1]}_{max_vars}"
+        if years is not None and nb_vars is not None:
+            filter = f"{years[0]}-{years[1]}_{nb_vars}"
         else:
             filter = "full"
 
@@ -32,28 +33,6 @@ class ExportResults():
             Path(f"output/{subfolder}/k-means").mkdir(parents=True, exist_ok=True)
             Path(f"output/{subfolder}/fc-means").mkdir(parents=True, exist_ok=True)
             Path(f"output/{subfolder}/k-meanoid").mkdir(parents=True, exist_ok=True)
-
-    def plot_max_cluster_size(self):
-        plt.figure(figsize=(12, 8))
-
-        plt.title("Taille du plus gros cluster en fonction du temps\n" + self.subtitle)
-        plt.xlabel("Date")
-        plt.ylabel("Taille du plus gros cluster")
-        plt.plot(self.dates, self.max_cluster_size)
-        plt.plot(self.dates, np.full(len(self.dates), self.upper_band), c='r')
-        plt.plot(self.dates, np.full(len(self.dates), self.lower_band), c='r')
-
-        plt.savefig(f"output/images/{self.algo}/max_{self.filename_params}.png")
-
-    def plot_k_values(self):
-        plt.figure(figsize=(12, 8))
-
-        plt.title("Nombre de clusters en fonction du temps\n" + self.subtitle)
-        plt.xlabel("Date")
-        plt.ylabel("Nombre de clusters")
-        plt.plot(self.dates, self.k_values)
-
-        plt.savefig(f"output/images/{self.algo}/k_{self.filename_params}.png")
 
     def identify_outliers(self, alpha=1.5):
         q1 = np.quantile(self.max_cluster_size, 0.25)
@@ -78,3 +57,35 @@ class ExportResults():
                 f.write(date[:10] + "\n")
 
         return upper_band, lower_band
+
+    def plot_max_cluster_size(self):
+        plt.figure(figsize=(12, 8))
+
+        plt.title("Taille du plus gros cluster en fonction du temps\n" + self.subtitle)
+        plt.xlabel("Date")
+        plt.ylabel("Taille du plus gros cluster")
+        plt.plot(self.dates, self.max_cluster_size)
+        plt.plot(self.dates, np.full(len(self.dates), self.upper_band), c='r')
+        plt.plot(self.dates, np.full(len(self.dates), self.lower_band), c='r')
+
+        plt.savefig(f"output/images/{self.algo}/max_{self.filename_params}.png")
+
+    def plot_k_values(self):
+        plt.figure(figsize=(12, 8))
+
+        plt.title("Nombre de clusters en fonction du temps\n" + self.subtitle)
+        plt.xlabel("Date")
+        plt.ylabel("Nombre de clusters")
+        plt.plot(self.dates, self.k_values)
+
+        plt.savefig(f"output/images/{self.algo}/k_{self.filename_params}.png")
+
+    def plot_rand_values(self):
+        plt.figure(figsize=(12, 8))
+
+        plt.title("Score rand en fonction du temps\n" + self.subtitle)
+        plt.xlabel("Date")
+        plt.ylabel("Score rand")
+        plt.plot(self.dates[:-1], self.rand_scores)
+
+        plt.savefig(f"output/images/{self.algo}/rand_{self.filename_params}.png")
