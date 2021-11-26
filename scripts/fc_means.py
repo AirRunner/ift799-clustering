@@ -13,13 +13,13 @@ def fc_means_auto_clusters(X, min_k=2, max_k=10):
     for k in range(min_k, max_k + 1):
         fcm = FCM(n_clusters=k)
         fcm.fit(X)
-        
+
         centers = fcm.centers
         y = fcm.predict(X)
-        
+
         s = silhouette(X, y)
         s_values.append(s)
-        
+
         if s > best_s:
             best_centers, best_y, best_k = centers, y, k
             best_s = s

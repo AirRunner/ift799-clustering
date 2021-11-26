@@ -36,13 +36,15 @@ def main():
     plt.title(f"Result of {'k-means' if algo == 'km' else 'fc-means'} clustering")
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.scatter(X[:,0], X[:,1], alpha=0.2, c=y)
-    plt.scatter(centers[:,0], centers[:,1], marker="+", s=500, c='r')
+    plt.scatter(X[:, 0], X[:, 1], alpha=0.2, c=y)
+    plt.scatter(centers[:, 0], centers[:, 1], marker="+", s=500, c='r')
     plt.show()
+
 
 def help():
     print("\n Usage: python test.py algo\
-           \n\t algo : 'km' for k-means of 'fcm' for fc-means")
+           \n\t algo : 'km' for k-means or 'fcm' for fc-means")
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:

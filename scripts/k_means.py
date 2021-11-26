@@ -6,7 +6,7 @@ from scripts.silhouette import dist_euclide, silhouette
 def k_means(X, k, threshold=1e-3):
     # Initialize random cluster centers
     centers = X[:k]
-    
+
     while True:
         # Assign points to clusters
         y = []
@@ -26,6 +26,7 @@ def k_means(X, k, threshold=1e-3):
 
         centers = new_centers
 
+
 def k_means_auto_clusters(X, min_k=2, max_k=10):
     s_values = []
     best_s = -1
@@ -37,7 +38,7 @@ def k_means_auto_clusters(X, min_k=2, max_k=10):
 
         s = silhouette(X, y)
         s_values.append(s)
-        
+
         if s > best_s:
             best_centers, best_y, best_k = centers, y, k
             best_s = s
