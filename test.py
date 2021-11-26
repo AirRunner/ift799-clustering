@@ -2,8 +2,8 @@ import sys
 import numpy as np
 from matplotlib import pyplot as plt
 
-from scripts.k_means import k_means_auto_clusters
-from scripts.fc_means import fc_means_auto_clusters
+from scripts.auto_clusters import auto_clusters
+from scripts.algorithms import k_means, fc_means
 
 
 def main():
@@ -19,9 +19,9 @@ def main():
     ))
 
     if algo == "km":
-        centers, y, k, s_values = k_means_auto_clusters(X, min_k, max_k)
+        centers, y, k, s_values = auto_clusters(X, k_means, min_k, max_k)
     elif algo == "fcm":
-        centers, y, k, s_values = fc_means_auto_clusters(X, min_k, max_k)
+        centers, y, k, s_values = auto_clusters(X, fc_means, min_k, max_k)
     else:
         raise NotImplementedError(f"The algorithm {algo} is not supported")
 

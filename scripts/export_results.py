@@ -2,7 +2,11 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift, upper_band, lower_band):
+def plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shift, upper_band, lower_band, years=None, max_vars=None):
+    filter = "full"
+    if years is not None and max_vars is not None:
+        filter = f"{years[0]}-{years[1]}_{max_vars}"
+
     plt.figure(figsize=(12, 8))
 
     plt.title("Taille du plus gros cluster en fonction du temps\n"
@@ -14,10 +18,14 @@ def plot_max_cluster_size(dates, max_cluster_size, algo, window_size, window_shi
     plt.plot(dates, np.full(len(dates), upper_band), c='r')
     plt.plot(dates, np.full(len(dates), lower_band), c='r')
 
-    plt.savefig(f"output/images/{algo}_max_{window_size}_{window_shift}.png")
+    plt.savefig(f"output/images/{algo}_max_{window_size}_{window_shift}_{filter}.png")
 
 
-def plot_k_values(dates, k_values, algo, window_size, window_shift):
+def plot_k_values(dates, k_values, algo, window_size, window_shift, years=None, max_vars=None):
+    filter = "full"
+    if years is not None and max_vars is not None:
+        filter = f"{years[0]}-{years[1]}_{max_vars}"
+
     plt.figure(figsize=(12, 8))
 
     plt.title("Nombre de clusters en fonction du temps\n"
@@ -27,7 +35,7 @@ def plot_k_values(dates, k_values, algo, window_size, window_shift):
     plt.ylabel("Nombre de clusters")
     plt.plot(dates, k_values)
 
-    plt.savefig(f"output/images/{algo}_k_{window_size}_{window_shift}.png")
+    plt.savefig(f"output/images/{algo}_k_{window_size}_{window_shift}_{filter}.png")
 
 
 def identify_outliers(dates, max_cluster_size, algo, window_size, window_shift):
