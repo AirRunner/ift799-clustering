@@ -5,8 +5,8 @@ import pandas as pd
 
 def rand(result, original):
     n = len(result)
-    k = np.unique(original)
     c = np.unique(result)
+    k = np.unique(original)
 
     contingence = pd.crosstab(result, original).to_numpy()
 

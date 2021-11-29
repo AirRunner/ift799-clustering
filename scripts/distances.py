@@ -5,7 +5,7 @@ def dist_euclide(x, y):
     return np.linalg.norm(x - y, axis=1)
 
 
-def dtw_score(s, t):
+def dtw_score(s, t):  # unused
     n, m = len(s), len(t)
 
     dtw = np.ones((n + 1, m + 1)) * np.inf

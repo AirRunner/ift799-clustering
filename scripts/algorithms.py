@@ -2,7 +2,7 @@ import numpy as np
 from fcmeans import FCM
 from fastdtw import fastdtw
 
-from scripts.distances import dist_euclide, dist_matrix, dtw_to_clust  # dtw_score
+from scripts.distances import dist_euclide, dist_matrix, dtw_to_clust
 
 
 def k_means(X, k, threshold=1e-4, max_iter=100):
@@ -32,10 +32,7 @@ def fc_means(X, k):
     fcm = FCM(n_clusters=k)
     fcm.fit(X)
 
-    centers = fcm.centers
-    y = fcm.predict(X)
-
-    return centers, y
+    return fcm.centers, fcm.predict(X)
 
 
 def k_meanoid(X, k, dist_mat=None, dist=fastdtw):
