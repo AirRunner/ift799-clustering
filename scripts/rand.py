@@ -5,22 +5,22 @@ import pandas as pd
 
 def rand(result, original):
     n = len(result)
-    c = np.unique(result)
-    k = np.unique(original)
+    c = len(np.unique(result))
+    k = len(np.unique(original))
 
     contingence = pd.crosstab(result, original).to_numpy()
 
     n11 = 0
-    for i in c:
-        for j in k:
+    for i in range(c):
+        for j in range(k):
             n11 += comb(contingence[i, j], 2)
 
     n10 = -n11
-    for j in k:
+    for j in range(k):
         n10 += comb(contingence[:, j].sum(), 2)
 
     n01 = -n11
-    for i in c:
+    for i in range(c):
         n01 += comb(contingence[i, :].sum(), 2)
 
     n00 = comb(n, 2) - (n11 + n10 + n01)
