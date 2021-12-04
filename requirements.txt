@@ -1,0 +1,6 @@
+fastdtw
+matplotlib
+numpy
+pandas
+tqdm
+fuzzy-c-means
